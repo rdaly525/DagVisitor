@@ -26,9 +26,9 @@ class Visitor(metaclass=VisitorMeta):
     def run(self, dag: AbstractDag):
         assert isinstance(dag, AbstractDag), f"{dag}"
         self._dag_cache = set()
-        for parent in dag.roots():
-            assert parent is not None
-            self.visit(parent)
+        for root in dag.roots():
+            assert root is not None
+            self.visit(root)
         return self
 
     def visit(self, node: Visited):
@@ -61,7 +61,7 @@ class Transformer(metaclass=VisitorMeta):
     def run(self, dag: AbstractDag):
         assert isinstance(dag, AbstractDag)
         self._dag_cache = {}
-        for output in dag.parents():
+        for output in dag.roots():
             self.generic_visit(output)
 
     def visit(self, node):
